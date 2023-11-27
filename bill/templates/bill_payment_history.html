@@ -1,0 +1,35 @@
+<!-- templates/bill_payment_history.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bill Payment History</title>
+</head>
+<body>
+    <h1>Bill Payment History</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Bill ID</th>
+                <th>Bill Type</th>
+                <th>Amount</th>
+                <th>Due Date</th>
+                <th>Created By</th>
+                <th>Payment Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for bill in bills %}
+            <tr>
+                <td>{{ bill.id }}</td>
+                <td>{{ bill.bill_type }}</td>
+                <td>{{ bill.amount }}</td>
+                <td>{{ bill.due_date }}</td>
+                <td>{{ bill.created_by.username }}</td>
+                <td>{{ bill.updated_at }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
