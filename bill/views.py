@@ -7,26 +7,8 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from rest_framework.decorators import api_view
 from .serializers import BillSerializer
+from reportlab.pdfgen import canvas
 
-
-def render_to_pdf(template_path, context_dict):
-    template = get_template(template_path)
-    html = template.render(context_dict)
-    response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'filename="bill_payment_history.pdf"'
-    pisa_status = pisa.CreatePDF(html, dest=response)
-    if pisa_status.err:
-        return HttpResponse('We had some errors <pre>' + html + '</pre>')
-    return response
-
-def bill_payment_history(request):
-    bills = Bill.objects.all()
-    context = {'bills': bills}
-    return render_to_pdf('bill_payment_history.html', context)
-
-def generate_report(request):
-    # Your logic for generating the report goes here
-    return render(request, 'admin/generate_report.html')  
 
 @api_view(['POST'])
 def pay_bill(request):
@@ -65,3 +47,27 @@ def pay_bill(request):
 
     except json.JSONDecodeError:
         return JsonResponse({'error': 'Invalid JSON format in the request.'}, status=400)
+
+
+def generate_pdf(request):
+    # Retrieve data from the database
+    bills = Bill.objects.all()
+
+    # Load the HTML template
+    template_path = 'bill_report.html'
+    context = {'bills': bills}
+    template = get_template(template_path)
+    html_content = template.render(context)
+
+    # Create a response object with PDF content type
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'inline; filename="bill_report.pdf"'
+
+    # Create a PDF object using ReportLab
+    pdf = pisa.CreatePDF(html_content, dest=response)
+
+    # If PDF generation failed
+    if pdf.err:
+        return HttpResponse('Error during PDF generation: %s' % pdf.err)
+
+    return response

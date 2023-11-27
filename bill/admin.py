@@ -4,6 +4,9 @@ from django.utils.html import format_html
 from django.utils import timezone
 from .models import Bill
 from django.contrib.auth.models import User
+from django.urls import reverse
+from django.shortcuts import redirect
+
 
 class BillAdminForm(forms.ModelForm):
     class Meta:
@@ -21,8 +24,16 @@ class BillAdmin(admin.ModelAdmin):
 
     form = BillAdminForm
 
-    actions = ['mark_as_paid']
+    actions = ['mark_as_paid','generate_pdf_action']
 
+    def generate_pdf_action(self, request, queryset):
+        # Get the URL for the generate_pdf_report view
+        url = reverse('generate_pdf')
+
+        # Redirect to the generate_pdf_report view for all bills
+        return redirect(f"{url}")
+
+    generate_pdf_action.short_description = 'Generate report'
 
     def save_model(self, request, obj, form, change):
         if not change:  # If it's a new object (creation)
@@ -122,6 +133,8 @@ class BillAdmin(admin.ModelAdmin):
 
     mark_as_paid.short_description = 'Mark bills to pay'
 
-change_list_template = 'admin/bill/bill/change_list.html'
+  
+
+
 # Register the model with the custom admin class
 admin.site.register(Bill, BillAdmin)

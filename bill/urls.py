@@ -1,8 +1,9 @@
 from django.urls import path
-from .views import bill_payment_history,pay_bill
+from .views import pay_bill,generate_pdf
 
 urlpatterns = [
-    path('bill-payment-history', bill_payment_history, name='bill_payment_history'),
-    path('api/v1/pay-bill', pay_bill, name='pay_bill')
+    path('api/v1/pay-bill', pay_bill, name='pay_bill'),
+    path('generate_pdf', generate_pdf, name='generate_pdf'),
+
 ]
 

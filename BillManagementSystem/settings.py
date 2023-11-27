@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'bill',
     'bill_type',
-    'payment',
     'rest_framework',
     'rest_framework_simplejwt',
     'bootstrap4'
@@ -95,10 +94,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'BillManagementSystem.wsgi.application'
 
-
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
-]
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
