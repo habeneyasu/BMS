@@ -76,3 +76,6 @@ def generate_pdf(request):
         return HttpResponse('Error during PDF generation: %s' % pdf.err)
 
     return response
+
+def bill_status_reminder(request):
+    return render(request, 'bill_status_reminder.html')

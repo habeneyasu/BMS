@@ -2,6 +2,11 @@ from django.db import models
 from django.contrib.auth.models import User
 from bill_type.models import BillType
 from django.utils import timezone
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
+
 # Create your models here.
 class Bill(models.Model):
     id=models.AutoField(primary_key=True)
@@ -27,6 +32,14 @@ class BillSerializer(serializers.ModelSerializer):
      class Meta:
         model = Bill
         fields = '__all__'
+
+@receiver(post_save, sender=Bill)
+def send_update_to_websocket(sender, instance, **kwargs):
+    channel_layer = get_channel_layer()
+    async_to_sync(channel_layer.group_send)(
+        "bill_status_updates",
+        {"type": "bill.update", "message": "Bill updated."},
+    )
 
   
 

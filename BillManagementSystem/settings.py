@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'bill_type',
     'rest_framework',
     'rest_framework_simplejwt',
-    'bootstrap4'
+    'bootstrap4',
+    'channels'
 ]
 
 BOOTSTRAP4 = {
@@ -90,6 +91,13 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+ASGI_APPLICATION = 'BillManagementSystem.routing.application'
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer'
+    },
+}
 ROOT_URLCONF = 'BillManagementSystem.urls'
 
 TEMPLATES = [

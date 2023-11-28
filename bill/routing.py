@@ -1,7 +1,18 @@
-from django.urls import re_path
+# routing.py
 
-from . import consumers
+from channels.routing import ProtocolTypeRouter, URLRouter
+from channels.auth import AuthMiddlewareStack
+from django.urls import path
+from .consumers import BillConsumer
 
-websocket_urlpatterns = [
-    re_path(r'ws/bill/(?P<bill_id>\w+)/$', consumers.BillConsumer.as_asgi()),
-]
+application = ProtocolTypeRouter(
+    {
+        "websocket": AuthMiddlewareStack(
+            URLRouter(
+                [
+                    path("ws/bill/", BillConsumer.as_asgi()),
+                ]
+            )
+        ),
+    }
+)

@@ -1,0 +1,36 @@
+<!-- Your HTML template file -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Your head content here -->
+</head>
+<body>
+
+    <!-- Your body content here -->
+
+    <!-- WebSocket event listeners -->
+    <script>
+        // Connect to the WebSocket server
+        const socket = new WebSocket("ws://" + window.location.host + "/ws/bill/");
+
+        // Handle WebSocket connection opened
+        socket.addEventListener("open", (event) => {
+            console.log("WebSocket connection opened");
+        });
+
+        // Handle WebSocket connection closed
+        socket.addEventListener("close", (event) => {
+            console.log("WebSocket connection closed");
+        });
+
+        // Handle WebSocket message received
+        socket.addEventListener("message", (event) => {
+            const data = JSON.parse(event.data);
+            console.log("Message received:", data.message);
+            // Handle the received data as needed
+        });
+    </script>
+
+</body>
+</html>
