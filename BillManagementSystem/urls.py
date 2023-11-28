@@ -17,6 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path,include
 from django.shortcuts import redirect
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 admin.site.site_header = 'Bill Management System'
 admin.site.index_title = 'Bill Payment'
@@ -27,5 +28,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('bill_type/', include('bill_type.urls')),
     path('bill/', include('bill.urls')),
+    path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     # path('payment/', include('payment.urls'))
 ]
